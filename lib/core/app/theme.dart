@@ -11,7 +11,8 @@ ThemeData lightTheme = ThemeData(
   ),
   textTheme: GoogleFonts.robotoTextTheme().copyWith(
     displayLarge: GoogleFonts.roboto().copyWith(fontWeight: FontWeight.bold),
-    titleMedium: GoogleFonts.roboto().copyWith(fontWeight: FontWeight.w500),
+    titleLarge: GoogleFonts.roboto().copyWith(fontWeight: FontWeight.bold),
+    titleMedium: GoogleFonts.roboto().copyWith(fontWeight: FontWeight.w600),
     labelMedium: GoogleFonts.roboto().copyWith(color: Colors.black54, fontWeight: FontWeight.normal)
   ),
   iconTheme: IconThemeData(

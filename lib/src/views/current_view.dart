@@ -3,8 +3,11 @@ import 'package:flutter_material_symbols/flutter_material_symbols.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/core/app/consts.dart';
+import 'package:weather_app/core/services/navigation_service.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_extra_info_widget.dart';
+import 'package:weather_app/src/clean_features/widgets/current_weather_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/weather_tile_widget.dart';
+import 'package:weather_app/src/views/forecast_view.dart';
 
 class CurrentView extends StatelessWidget {
   const CurrentView({super.key});
@@ -40,49 +43,17 @@ class CurrentView extends StatelessWidget {
         child: Column(
           children: [
 
-            // Clima Actual
-            SizedBox(
-              height: 200,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-
-                      //* Titulos
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Texto y fecha
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("lluvia y truenos", style: textTheme.titleMedium,),
-                              Text(DateFormat("EEE dd, MMM yy - hh:mm a").format(DateTime.now()), style: textTheme.labelMedium,),
-                            ],
-                          ),
-                          // Temperatura
-                          Text("16°", style: textTheme.displayLarge,)
-                        ],
-                      ),
-
-                      //* Icono
-                      Image.asset(
-                        "assets/weather_icons/SnowyDark.png",
-                        width: 128,
-                        height: 128,
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
+            // Clima Actual | Card
+            CurrentWeatherWidget(
+              title: "Soleado",
+              temperature: "35",
+              date: DateTime.now(),
+              icon: "assets/weather_icons/Sunny.png"
             ),
 
             // Clima actual | Información extra
             const Gap(10),
+
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,24 +77,26 @@ class CurrentView extends StatelessWidget {
 
             const Gap(10),
 
+            // Botón de pronostico
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Hoy"),
                 TextButton(
-                  onPressed: () => goToForecastView(context),
-                  child: Row(
-                    children: [
-                      Text("7 Días"),
-                      Icon(Icons.arrow_forward_ios_outlined)
-                    ],
-                  )
+                    onPressed: () => goToForecastView(context),
+                    child: Row(
+                      children: [
+                        Text("7 Días"),
+                        Icon(Icons.arrow_forward_ios_outlined)
+                      ],
+                    )
                 )
               ],
             ),
 
             const Gap(10),
 
+            // Lista de clima por Hora
             Expanded(
               child: ListView.separated(
                 itemCount: 24,
@@ -147,6 +120,8 @@ class CurrentView extends StatelessWidget {
 
   void goToForecastView(BuildContext context) {
    // todo: Navegar a Forecast View con un servicio
+    NavigationService navigationService = NavigationService();
+    navigationService.navigateTo(ForecastView());
   }
 
   void setLanguage(BuildContext context) {
