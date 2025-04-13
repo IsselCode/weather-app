@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_material_symbols/flutter_material_symbols.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_app/core/app/consts.dart';
 import 'package:weather_app/core/services/navigation_service.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_extra_info_widget.dart';
@@ -119,8 +120,8 @@ class CurrentView extends StatelessWidget {
   }
 
   void goToForecastView(BuildContext context) {
-   // todo: Navegar a Forecast View con un servicio
-    NavigationService navigationService = NavigationService();
+
+    NavigationService navigationService = context.read();
     navigationService.navigateTo(ForecastView());
   }
 

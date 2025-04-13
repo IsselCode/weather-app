@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_app/core/app/theme.dart';
 import 'package:weather_app/core/services/navigation_service.dart';
 import 'package:weather_app/src/views/current_view.dart';
@@ -15,14 +16,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    NavigationService navigationService = NavigationService();
-
-    return MaterialApp(
-      navigatorKey: navigationService.navigatorKey,
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      home: const CurrentView(),
+    return MultiProvider(
+      providers: [
+        Provider<NavigationService>.value(value: NavigationService(),)
+      ],
+      child: Consumer<NavigationService>(
+        builder: (context, navigationService, child) {
+          return MaterialApp(
+            navigatorKey: navigationService.navigatorKey,
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            theme: lightTheme,
+            home: const CurrentView(),
+          );
+      })
     );
   }
 }
