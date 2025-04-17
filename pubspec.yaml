@@ -39,6 +39,7 @@ dependencies:
   flutter_material_symbols: ^0.0.4
   google_fonts: ^6.2.1
   provider: ^6.1.4
+  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:

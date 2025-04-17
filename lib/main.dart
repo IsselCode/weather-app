@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        Provider<NavigationService>.value(value: NavigationService(),)
+        Provider<NavigationService>.value(value: NavigationService())
       ],
       child: Consumer<NavigationService>(
         builder: (context, navigationService, child) {

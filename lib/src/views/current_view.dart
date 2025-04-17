@@ -5,10 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/core/app/consts.dart';
 import 'package:weather_app/core/services/navigation_service.dart';
+import 'package:weather_app/core/utils/get_weather_icon_util.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_extra_info_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/weather_tile_widget.dart';
 import 'package:weather_app/src/views/forecast_view.dart';
+
+import '../../core/app/enums.dart';
 
 class CurrentView extends StatelessWidget {
   const CurrentView({super.key});
@@ -49,7 +52,13 @@ class CurrentView extends StatelessWidget {
               title: "Soleado",
               temperature: "35",
               date: DateTime.now(),
-              icon: "assets/weather_icons/Sunny.png"
+              icon: getWeatherIconWithEnumUtil(
+                iconEnum: WeatherIconEnum.snowy,
+                isDark: false
+              ).fold(
+                (l) => throw UnimplementedError(),
+                (r) => r,
+              )
             ),
 
             // Clima actual | Información extra
@@ -120,7 +129,7 @@ class CurrentView extends StatelessWidget {
   }
 
   void goToForecastView(BuildContext context) {
-
+   // todo: Navegar a Forecast View con un servicio
     NavigationService navigationService = context.read();
     navigationService.navigateTo(ForecastView());
   }
