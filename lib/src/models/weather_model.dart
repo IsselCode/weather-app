@@ -16,7 +16,7 @@ class WeatherModel {
       queryParameters: {
         "key": _APIKEY,
         "q": location,
-        "days": 3,
+        "days": "3",
         "lang": "es"
       }
     );
@@ -38,7 +38,7 @@ class WeatherModel {
       }
 
     } catch (e) {
-      return Left(ServerError(message: "Error desconocido"));
+      return Left(ServerError(message: e.toString()));
     }
 
   }

@@ -6,9 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/core/app/consts.dart';
 import 'package:weather_app/core/services/navigation_service.dart';
 import 'package:weather_app/core/utils/get_weather_icon_util.dart';
+import 'package:weather_app/src/clean_features/entities/current_entity.dart';
+import 'package:weather_app/src/clean_features/entities/location_entity.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_extra_info_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/weather_tile_widget.dart';
+import 'package:weather_app/src/controllers/weather_controller.dart';
 import 'package:weather_app/src/views/forecast_view.dart';
 
 import '../../core/app/enums.dart';
@@ -18,16 +21,21 @@ class CurrentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    WeatherController weatherController = context.watch();
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
+    LocationEntity? location = weatherController.weather?.location;
+    CurrentEntity? current = weatherController.weather?.current;
+
+    return weatherController.weather == null
+    ? Center(child: const CircularProgressIndicator())
+    : Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             Icon(Icons.location_on_outlined, size: 24,),
             const Gap(5),
-            Text("Monterrey, México", style: textTheme.titleMedium,)
+            Text("${location!.name} - ${location.country}", style: textTheme.titleMedium,)
           ],
         ),
         actions: [
@@ -49,8 +57,8 @@ class CurrentView extends StatelessWidget {
 
             // Clima Actual | Card
             CurrentWeatherWidget(
-              title: "Soleado",
-              temperature: "35",
+              title: current!.condition.text,
+              temperature: current!.feelslikeC.toStringAsFixed(0),
               date: DateTime.now(),
               icon: getWeatherIconWithEnumUtil(
                 iconEnum: WeatherIconEnum.snowy,
