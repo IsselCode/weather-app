@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
 class CurrentWeatherWidget extends StatelessWidget {
@@ -39,7 +40,11 @@ class CurrentWeatherWidget extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title, style: textTheme.titleMedium,),
+                      SizedBox(
+                        width: 200,
+                        child: Text(title, style: textTheme.titleMedium, maxLines: 2,)
+                      ),
+                      const Gap(5),
                       Text(DateFormat("EEE dd, MMM yy - hh:mm a").format(date), style: textTheme.labelMedium,),
                     ],
                   ),
