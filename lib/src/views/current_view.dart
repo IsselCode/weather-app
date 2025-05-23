@@ -7,6 +7,8 @@ import 'package:weather_app/core/app/consts.dart';
 import 'package:weather_app/core/services/navigation_service.dart';
 import 'package:weather_app/core/utils/get_weather_icon_util.dart';
 import 'package:weather_app/src/clean_features/entities/current_entity.dart';
+import 'package:weather_app/src/clean_features/entities/forecast_day_entity.dart';
+import 'package:weather_app/src/clean_features/entities/hour_entity.dart';
 import 'package:weather_app/src/clean_features/entities/location_entity.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_extra_info_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_widget.dart';
@@ -78,7 +80,7 @@ class CurrentView extends StatelessWidget {
               children: [
                 CurrentWeatherExtraInfoWidget(
                   icon: Icons.air_outlined,
-                  title: "8km/h",
+                  title: "${weatherController.weather!.current.gustKph} km/h",
                   description: "Viento"
                 ),
                 SizedBox(
@@ -87,7 +89,7 @@ class CurrentView extends StatelessWidget {
                 ),
                 CurrentWeatherExtraInfoWidget(
                   icon: MaterialSymbols.humidity_percentage_filled,
-                  title: "22%",
+                  title: "${weatherController.weather!.current.humidity}%",
                   description: "Humedad"
                 )
               ],
@@ -117,13 +119,20 @@ class CurrentView extends StatelessWidget {
             // Lista de clima por Hora
             Expanded(
               child: ListView.separated(
-                itemCount: 24,
+                padding: EdgeInsets.only(bottom: 75),
+                itemCount: weatherController.weather!.forecast.forecastday.first.hour.length,
                 separatorBuilder: (context, index) => Gap(10),
                 itemBuilder: (context, index) {
+                  ForecastDayEntity forecast = weatherController.weather!.forecast.forecastday.first;
+                  HourEntity hour = forecast.hour[index];
+
                   return WeatherTileWidget(
-                    leading: "12:00",
-                    trailing: "18",
-                    icon: "assets/weather_icons/SnowyDark.png"
+                    leading: "${DateFormat("hh:mm a").format(DateTime.parse(hour.time))}",
+                    trailing: "${hour.tempC}",
+                    icon: getWeatherIconWithEnumUtil(
+                      iconEnum: hour.condition.code,
+                      isDark: false
+                    ).fold((l) => throw UnimplementedError(), (r) => r,)
                   );
                 },
               ),
