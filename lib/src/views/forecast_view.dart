@@ -77,6 +77,9 @@ class ForecastView extends StatelessWidget {
                 separatorBuilder: (context, index) => Gap(10),
                 itemBuilder: (context, index) {
                   return WeatherTileWidget(
+                    onTap: () {
+
+                    },
                     leading: "12:00",
                     trailing: "18",
                     icon: "assets/weather_icons/SnowyDark.png"

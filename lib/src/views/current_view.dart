@@ -18,8 +18,15 @@ import 'package:weather_app/src/views/forecast_view.dart';
 
 import '../../core/app/enums.dart';
 
-class CurrentView extends StatelessWidget {
-  const CurrentView({super.key});
+class CurrentView extends StatefulWidget {
+  CurrentView({super.key});
+
+  @override
+  State<CurrentView> createState() => _CurrentViewState();
+}
+
+class _CurrentViewState extends State<CurrentView> {
+  HourEntity? selectedHour;
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +66,11 @@ class CurrentView extends StatelessWidget {
 
             // Clima Actual | Card
             CurrentWeatherWidget(
-              title: current!.condition.text,
-              temperature: current!.feelslikeC.toStringAsFixed(0),
+              title: selectedHour != null ? selectedHour!.condition.text : current!.condition.text,
+              temperature: selectedHour != null ? selectedHour!.tempC.toStringAsFixed(0) : current!.feelslikeC.toStringAsFixed(0),
               date: DateTime.now(),
               icon: getWeatherIconWithEnumUtil(
-                iconEnum: WeatherIconEnum.snowy,
+                iconEnum: selectedHour != null ? selectedHour!.condition.code : current!.condition.code,
                 isDark: false
               ).fold(
                 (l) => throw UnimplementedError(),
@@ -80,7 +87,7 @@ class CurrentView extends StatelessWidget {
               children: [
                 CurrentWeatherExtraInfoWidget(
                   icon: Icons.air_outlined,
-                  title: "${weatherController.weather!.current.gustKph} km/h",
+                  title: "${selectedHour != null ? selectedHour!.gustKph : weatherController.weather!.current.gustKph} km/h",
                   description: "Viento"
                 ),
                 SizedBox(
@@ -89,7 +96,7 @@ class CurrentView extends StatelessWidget {
                 ),
                 CurrentWeatherExtraInfoWidget(
                   icon: MaterialSymbols.humidity_percentage_filled,
-                  title: "${weatherController.weather!.current.humidity}%",
+                  title: "${selectedHour != null ? selectedHour!.humidity : weatherController.weather!.current.humidity}%",
                   description: "Humedad"
                 )
               ],
@@ -127,6 +134,16 @@ class CurrentView extends StatelessWidget {
                   HourEntity hour = forecast.hour[index];
 
                   return WeatherTileWidget(
+                    onTap: () {
+                      if (selectedHour == hour) {
+                        selectedHour = null;
+                      }
+                      else {
+                        selectedHour = hour;
+                      }
+                      setState(() {});
+                    },
+                    selected: selectedHour == hour,
                     leading: "${DateFormat("hh:mm a").format(DateTime.parse(hour.time))}",
                     trailing: "${hour.tempC}",
                     icon: getWeatherIconWithEnumUtil(
@@ -160,5 +177,4 @@ class CurrentView extends StatelessWidget {
   void setLocation(BuildContext context) {
 
   }
-
 }
