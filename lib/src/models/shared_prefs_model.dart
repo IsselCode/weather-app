@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const latKey = "latitude";
 const lngKey = "longitude";
+const themeKey = "theme_key";
 
 class SharedPrefsModel {
 
@@ -23,6 +24,14 @@ class SharedPrefsModel {
 
     return (lat, lng);
 
+  }
+
+  Future<void> saveTheme(bool isDark) async {
+    await shared.setBool(themeKey, isDark);
+  }
+
+  bool getTheme() {
+    return shared.getBool(themeKey) ?? false;
   }
 
 }

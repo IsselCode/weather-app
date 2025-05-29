@@ -13,6 +13,7 @@ import 'package:weather_app/src/clean_features/entities/location_entity.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_extra_info_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/weather_tile_widget.dart';
+import 'package:weather_app/src/controllers/theme_controller.dart';
 import 'package:weather_app/src/controllers/weather_controller.dart';
 import 'package:weather_app/src/views/forecast_view.dart';
 
@@ -31,6 +32,7 @@ class _CurrentViewState extends State<CurrentView> {
   @override
   Widget build(BuildContext context) {
     WeatherController weatherController = context.watch();
+    ThemeController themeController = context.watch();
     final textTheme = Theme.of(context).textTheme;
 
     LocationEntity? location = weatherController.weather?.location;
@@ -56,6 +58,12 @@ class _CurrentViewState extends State<CurrentView> {
           IconButton(
             onPressed: () => setLocation(context),
             icon: Icon(Icons.search_outlined, size: 24,)
+          ),
+          Switch(
+            value: themeController.getTheme(),
+            onChanged: (value) async {
+              await themeController.saveTheme(value);
+            },
           )
         ],
       ),
@@ -71,7 +79,7 @@ class _CurrentViewState extends State<CurrentView> {
               date: DateTime.now(),
               icon: getWeatherIconWithEnumUtil(
                 iconEnum: selectedHour != null ? selectedHour!.condition.code : current!.condition.code,
-                isDark: false
+                isDark: themeController.getTheme()
               ).fold(
                 (l) => throw UnimplementedError(),
                 (r) => r,
@@ -148,7 +156,7 @@ class _CurrentViewState extends State<CurrentView> {
                     trailing: "${hour.tempC}",
                     icon: getWeatherIconWithEnumUtil(
                       iconEnum: hour.condition.code,
-                      isDark: false
+                      isDark: themeController.getTheme()
                     ).fold((l) => throw UnimplementedError(), (r) => r,)
                   );
                 },

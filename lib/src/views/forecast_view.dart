@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/core/utils/get_weather_icon_util.dart';
 import 'package:weather_app/src/clean_features/entities/forecast_day_entity.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_widget.dart';
+import 'package:weather_app/src/controllers/theme_controller.dart';
 import 'package:weather_app/src/controllers/weather_controller.dart';
 
 import '../../core/app/consts.dart';
@@ -33,7 +34,7 @@ class _ForecastViewState extends State<ForecastView> {
 
   @override
   Widget build(BuildContext context) {
-
+    ThemeController themeController = context.watch();
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -56,7 +57,7 @@ class _ForecastViewState extends State<ForecastView> {
               date: selectedForecastDay.date,
               icon: getWeatherIconWithEnumUtil(
                 iconEnum: selectedForecastDay.day.condition.code,
-                isDark: false
+                isDark: themeController.getTheme()
               ).fold((l) => throw Exception(l.message), (r) => r,)
             ),
 
@@ -115,7 +116,7 @@ class _ForecastViewState extends State<ForecastView> {
                     trailing: "${forecastDay.day.maxtempC.toStringAsFixed(0)}°. ${forecastDay.day.mintempC.toStringAsFixed(0)}",
                     icon: getWeatherIconWithEnumUtil(
                       iconEnum: forecastDay.day.condition.code,
-                      isDark: false
+                      isDark: themeController.getTheme()
                     ).fold((l) => throw Exception(l.message), (r) => r,)
                   );
                 },
