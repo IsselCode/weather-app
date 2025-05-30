@@ -19,6 +19,7 @@ import 'package:weather_app/src/controllers/weather_controller.dart';
 import 'package:weather_app/src/views/forecast_view.dart';
 
 import '../../core/app/enums.dart';
+import '../clean_features/dialogs/set_language_dialog.dart';
 
 class CurrentView extends StatefulWidget {
   CurrentView({super.key});
@@ -179,9 +180,14 @@ class _CurrentViewState extends State<CurrentView> {
     navigationService.navigateTo(ForecastView());
   }
 
-  void setLanguage(BuildContext context) {
+  void setLanguage(BuildContext context) async {
 
+    LanguageTypes? language = await showDialog(
+      context: context,
+      builder: (context) => SetLanguageDialog(),
+    );
 
+    print(language);
 
   }
 

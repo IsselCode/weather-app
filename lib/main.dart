@@ -37,14 +37,15 @@ class MyApp extends StatelessWidget {
         return MultiProvider(
             providers: [
               Provider<SharedPrefsModel>.value(value: SharedPrefsModel(shared: shared)),
-              Provider<NavigationService>.value(value: NavigationService()),
               Provider<WeatherModel>.value(value: WeatherModel()),
               Provider<LocationUtil>.value(value: LocationUtil()),
+              Provider<NavigationService>(create: (context) => NavigationService(),),
               ChangeNotifierProvider(create: (context) => ThemeController(shared: context.read()),),
               ChangeNotifierProvider(create: (context) => WeatherController(
                 weatherModel: context.read(),
                 locationUtil: context.read(),
-                sharedPrefsModel: context.read()
+                sharedPrefsModel: context.read(),
+                navigationService: context.read(),
               )..getForecast(),)
             ],
             child: Consumer<ThemeController>(

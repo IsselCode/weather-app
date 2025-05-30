@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/core/services/navigation_service.dart';
 import 'package:weather_app/core/utils/location_util.dart';
 import 'package:weather_app/src/clean_features/entities/coords_entity.dart';
 import 'package:weather_app/src/clean_features/entities/weather_entity.dart';
@@ -15,11 +16,13 @@ class WeatherController extends ChangeNotifier {
   WeatherModel weatherModel;
   LocationUtil locationUtil;
   SharedPrefsModel sharedPrefsModel;
+  NavigationService navigationService;
 
   WeatherController({
     required this.weatherModel,
     required this.locationUtil,
     required this.sharedPrefsModel,
+    required this.navigationService,
   });
 
   WeatherEntity? weather;
@@ -101,10 +104,12 @@ class WeatherController extends ChangeNotifier {
 
     Either<AppError, WeatherEntity> response = await weatherModel.getForecast(location);
 
+
     response.fold(
       (l) => print(l.message),
       (r) {
         weather = r;
+        navigationService.goBack();
         notifyListeners();
       },
     );
