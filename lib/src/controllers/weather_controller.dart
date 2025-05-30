@@ -8,6 +8,7 @@ import 'package:weather_app/src/models/shared_prefs_model.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 
 import '../../core/app/failures.dart';
+import '../clean_features/entities/city_entity.dart';
 
 class WeatherController extends ChangeNotifier {
 
@@ -40,6 +41,17 @@ class WeatherController extends ChangeNotifier {
         },
       );
     }
+
+  }
+
+  Future<List<CityEntity>?> searchCity(String query) async {
+
+    Either<AppError, List<CityEntity>> response = await weatherModel.searchCity(query);
+
+    return response.fold(
+      (l) => null,
+      (r) => r,
+    );
 
   }
 
@@ -78,6 +90,22 @@ class WeatherController extends ChangeNotifier {
           },
         );
 
+      },
+    );
+
+  }
+
+  Future<void> getForecastWithCoords(CityEntity city) async {
+
+    String location = "${city.lat},${city.lon}";
+
+    Either<AppError, WeatherEntity> response = await weatherModel.getForecast(location);
+
+    response.fold(
+      (l) => print(l.message),
+      (r) {
+        weather = r;
+        notifyListeners();
       },
     );
 

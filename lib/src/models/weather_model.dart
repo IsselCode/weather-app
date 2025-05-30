@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:weather_app/core/app/failures.dart';
+import 'package:weather_app/src/clean_features/entities/city_entity.dart';
 import 'package:weather_app/src/clean_features/entities/weather_entity.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,6 +36,46 @@ class WeatherModel {
         return Right(weather);
       } else {
         return Left(ServerError(message: "Algo falló al obtener el pronosticó"));
+      }
+
+    } catch (e) {
+      return Left(ServerError(message: e.toString()));
+    }
+
+  }
+
+  Future<Either<AppError, List<CityEntity>>> searchCity(String location) async {
+
+    final uri = Uri.parse("${_BASEURL}/search.json").replace(
+        queryParameters: {
+          "key": _APIKEY,
+          "q": location,
+        }
+    );
+
+    try {
+
+      final response = await http.get(uri);
+
+      // Verificar si la solicitud fue exitosa con un código 200
+      if (response.statusCode == 200) {
+        // Lista temporal para ciudades
+        List<CityEntity> tempCities = <CityEntity>[];
+
+        // Decodificar la respuesta JSON
+        final cities = json.decode(response.body);
+
+        // Iterar cada ciudad para crear entidades
+        for (var cityData in cities) {
+          // Crear Entidad de Ciudad
+          CityEntity city = CityEntity.fromJson(cityData);
+          tempCities.add(city);
+        }
+
+        // Devolver un Right con la información
+        return Right(tempCities);
+      } else {
+        return Left(ServerError(message: "Algo falló al buscar la ciudad"));
       }
 
     } catch (e) {

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/core/app/consts.dart';
 import 'package:weather_app/core/services/navigation_service.dart';
 import 'package:weather_app/core/utils/get_weather_icon_util.dart';
+import 'package:weather_app/src/clean_features/entities/city_entity.dart';
 import 'package:weather_app/src/clean_features/entities/current_entity.dart';
 import 'package:weather_app/src/clean_features/entities/forecast_day_entity.dart';
 import 'package:weather_app/src/clean_features/entities/hour_entity.dart';
@@ -55,10 +56,12 @@ class _CurrentViewState extends State<CurrentView> {
             onPressed: () => setLanguage(context),
             icon: Icon(Icons.language_outlined, size: 24,)
           ),
+          // Busqueda
           IconButton(
             onPressed: () => setLocation(context),
             icon: Icon(Icons.search_outlined, size: 24,)
           ),
+          // Tema
           Switch(
             value: themeController.getTheme(),
             onChanged: (value) async {
@@ -183,6 +186,85 @@ class _CurrentViewState extends State<CurrentView> {
   }
 
   void setLocation(BuildContext context) {
+    showSearch(
+      context: context,
+      delegate: CustomSearch()
+    );
+  }
+
+}
+
+class CustomSearch extends SearchDelegate {
+
+  @override
+  // TODO: implement searchFieldLabel
+  String? get searchFieldLabel => "Buscar";
+
+  @override
+  // TODO: implement searchFieldDecorationTheme
+  InputDecorationTheme? get searchFieldDecorationTheme => InputDecorationTheme(
+    hintStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+    border: OutlineInputBorder(borderSide: BorderSide.none)
+  );
+
+  @override
+  // TODO: implement searchFieldStyle
+  TextStyle? get searchFieldStyle => TextStyle(color: Colors.red);
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+   return null;
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+
+    WeatherController weatherController = context.read();
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    TextTheme textTheme = Theme.of(context).textTheme;
+
+    return FutureBuilder(
+      future: weatherController.searchCity(query),
+      builder: (context, snapshot) {
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator(),);
+        }
+
+        List<CityEntity> cities = snapshot.data!;
+
+        return ListView.separated(
+          itemCount: cities.length,
+          separatorBuilder: (context, index) {
+            return SizedBox(height: 10,);
+          },
+          itemBuilder: (context, index) {
+
+            CityEntity city = cities[index];
+
+            return ListTile(
+              title: Text("${city.name}, ${city.region}", style: textTheme.titleMedium,),
+              trailing: Text(city.country),
+              tileColor: colorScheme.surface,
+              onTap: () async {
+                await weatherController.getForecastWithCoords(city);
+              },
+            );
+          },
+        );
+      },
+    );
 
   }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return SizedBox.shrink();
+  }
+
 }
