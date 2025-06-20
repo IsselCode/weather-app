@@ -11,16 +11,16 @@ enum WeatherIconEnum {
 enum LanguageTypes {
 
   es,
-  us,
+  en,
   pt;
 
   // Para obtener el tipo con el código
-  LanguageTypes convertCode(String code) {
+  static LanguageTypes convertCode(String code) {
     switch (code) {
       case "es":
         return LanguageTypes.es;
-      case "us":
-        return LanguageTypes.us;
+      case "en":
+        return LanguageTypes.en;
       case "pt":
         return LanguageTypes.pt;
       default:
@@ -33,8 +33,8 @@ enum LanguageTypes {
     switch (this) {
       case LanguageTypes.es:
         return "es";
-      case LanguageTypes.us:
-        return "us";
+      case LanguageTypes.en:
+        return "en";
       case LanguageTypes.pt:
         return "pt";
     }
@@ -44,7 +44,7 @@ enum LanguageTypes {
     switch (this) {
       case LanguageTypes.es:
         return "Español";
-      case LanguageTypes.us:
+      case LanguageTypes.en:
         return "Inglés";
       case LanguageTypes.pt:
         return "Portugués";

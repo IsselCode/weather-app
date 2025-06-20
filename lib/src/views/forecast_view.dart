@@ -12,6 +12,7 @@ import 'package:weather_app/src/controllers/weather_controller.dart';
 import '../../core/app/consts.dart';
 import '../clean_features/widgets/current_weather_extra_info_widget.dart';
 import '../clean_features/widgets/weather_tile_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForecastView extends StatefulWidget {
   const ForecastView({super.key});
@@ -42,7 +43,7 @@ class _ForecastViewState extends State<ForecastView> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: Text("Próximos 7 Días", style: textTheme.titleLarge,),
+            child: Text(AppLocalizations.of(context)!.next_seven_days, style: textTheme.titleLarge,),
           )
         ],
       ),
@@ -70,7 +71,7 @@ class _ForecastViewState extends State<ForecastView> {
                 CurrentWeatherExtraInfoWidget(
                     icon: Icons.air_outlined,
                     title: "${selectedForecastDay.day.maxwindKph}km/h",
-                    description: "Viento"
+                    description: AppLocalizations.of(context)!.wind
                 ),
                 SizedBox(
                     height: 80,
@@ -79,7 +80,7 @@ class _ForecastViewState extends State<ForecastView> {
                 CurrentWeatherExtraInfoWidget(
                   icon: MaterialSymbols.rainy,
                   title: "${selectedForecastDay.day.dailyChanceOfRain}%",
-                  description: "Lluvia"
+                  description: AppLocalizations.of(context)!.rain
                 ),
                 SizedBox(
                   height: 80,
@@ -88,7 +89,7 @@ class _ForecastViewState extends State<ForecastView> {
                 CurrentWeatherExtraInfoWidget(
                     icon: MaterialSymbols.humidity_percentage_filled,
                     title: "${selectedForecastDay.day.avghumidity}%",
-                    description: "Humedad"
+                    description: AppLocalizations.of(context)!.humidity
                 )
               ],
             ),

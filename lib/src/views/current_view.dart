@@ -14,12 +14,15 @@ import 'package:weather_app/src/clean_features/entities/location_entity.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_extra_info_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/current_weather_widget.dart';
 import 'package:weather_app/src/clean_features/widgets/weather_tile_widget.dart';
+import 'package:weather_app/src/controllers/language_controller.dart';
 import 'package:weather_app/src/controllers/theme_controller.dart';
 import 'package:weather_app/src/controllers/weather_controller.dart';
 import 'package:weather_app/src/views/forecast_view.dart';
 
 import '../../core/app/enums.dart';
 import '../clean_features/dialogs/set_language_dialog.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CurrentView extends StatefulWidget {
   CurrentView({super.key});
@@ -100,7 +103,7 @@ class _CurrentViewState extends State<CurrentView> {
                 CurrentWeatherExtraInfoWidget(
                   icon: Icons.air_outlined,
                   title: "${selectedHour != null ? selectedHour!.gustKph : weatherController.weather!.current.gustKph} km/h",
-                  description: "Viento"
+                  description: AppLocalizations.of(context)!.wind
                 ),
                 SizedBox(
                   height: 80,
@@ -109,7 +112,7 @@ class _CurrentViewState extends State<CurrentView> {
                 CurrentWeatherExtraInfoWidget(
                   icon: MaterialSymbols.humidity_percentage_filled,
                   title: "${selectedHour != null ? selectedHour!.humidity : weatherController.weather!.current.humidity}%",
-                  description: "Humedad"
+                  description: AppLocalizations.of(context)!.humidity
                 )
               ],
             ),
@@ -120,12 +123,12 @@ class _CurrentViewState extends State<CurrentView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Hoy"),
+                Text(AppLocalizations.of(context)!.today),
                 TextButton(
                     onPressed: () => goToForecastView(context),
                     child: Row(
                       children: [
-                        Text("7 Días"),
+                        Text(AppLocalizations.of(context)!.seven_days),
                         Icon(Icons.arrow_forward_ios_outlined)
                       ],
                     )
@@ -181,13 +184,16 @@ class _CurrentViewState extends State<CurrentView> {
   }
 
   void setLanguage(BuildContext context) async {
+    LanguageController languageController = context.read();
 
     LanguageTypes? language = await showDialog(
       context: context,
       builder: (context) => SetLanguageDialog(),
     );
 
-    print(language);
+    if (language != null) {
+      languageController.changeLocale(language.code);
+    }
 
   }
 

@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_app/core/app/consts.dart';
 import 'package:weather_app/core/app/enums.dart';
+import 'package:weather_app/src/controllers/language_controller.dart';
 
 class SetLanguageDialog extends StatefulWidget {
+
   const SetLanguageDialog({super.key});
 
   @override
@@ -20,11 +23,12 @@ class _SetLanguageDialogState extends State<SetLanguageDialog> {
   @override
   void initState() {
     super.initState();
-
-    LanguageTypes selectedLanguageController = LanguageTypes.pt;
+    LanguageController languageController = context.read();
+    String languageCode = languageController.locale.languageCode;
+    LanguageTypes currentLanguage = LanguageTypes.convertCode(languageCode);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      while (selectedLanguage != selectedLanguageController) {
+      while (selectedLanguage != currentLanguage) {
         await _pageController.animateToPage(
           _selectedIndex + 1,
           duration: Duration(milliseconds: 300),

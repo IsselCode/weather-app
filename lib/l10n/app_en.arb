@@ -1,0 +1,28 @@
+{
+
+  "today": "Today",
+  "@today": {
+    "description": "Clima o eventos del día actual."
+  },
+  "seven_days": "7 Days",
+  "@seven_days": {
+    "description": "Predicciones meteorológicas para los próximos días."
+  },
+  "next_seven_days": "Next 7 days",
+  "@next_seven_days": {
+    "description": "Pronóstico del clima para los próximos 7 días."
+  },
+  "wind": "Wind",
+  "@Wind": {
+    "description": "Velocidad y dirección del viento según el pronóstico."
+  },
+  "humidity": "Humidity",
+  "@humidity": {
+    "description": "Nivel de humedad relativa según el pronóstico."
+  },
+  "rain": "Rain",
+  "@rain": {
+    "description": "Probabilidad y volumen de lluvia según el pronóstico."
+  }
+
+}
