@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const latKey = "latitude";
 const lngKey = "longitude";
 const themeKey = "theme_key";
+const languageCodeKey = "language_code_key";
 
 class SharedPrefsModel {
 
@@ -32,6 +33,14 @@ class SharedPrefsModel {
 
   bool getTheme() {
     return shared.getBool(themeKey) ?? false;
+  }
+
+  Future<void> saveLanguage(String code) async {
+    await shared.setString(languageCodeKey, code);
+  }
+
+  String? getLanguage() {
+    return shared.getString(languageCodeKey);
   }
 
 }

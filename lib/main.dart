@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
               Provider<WeatherModel>.value(value: WeatherModel()),
               Provider<LocationUtil>.value(value: LocationUtil()),
               Provider<NavigationService>(create: (context) => NavigationService(),),
-              ChangeNotifierProvider(create: (context) => LanguageController(),),
+              ChangeNotifierProvider(create: (context) => LanguageController(sharedPrefsModel: context.read()),),
               ChangeNotifierProvider(create: (context) => ThemeController(shared: context.read()),),
               ChangeNotifierProvider(create: (context) => WeatherController(
                 weatherModel: context.read(),

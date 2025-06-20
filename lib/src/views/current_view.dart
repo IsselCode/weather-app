@@ -192,7 +192,7 @@ class _CurrentViewState extends State<CurrentView> {
     );
 
     if (language != null) {
-      languageController.changeLocale(language.code);
+      await languageController.changeLocale(language.code);
     }
 
   }
